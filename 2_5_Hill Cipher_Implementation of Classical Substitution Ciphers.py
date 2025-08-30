@@ -15,7 +15,7 @@ def mod_inverse(a, m):
 def encrypt(text, key):
     n = len(key)
     nums = text_to_nums(text)
-    if len(nums)%n: nums.append(23)  # pad 'X'
+    if len(nums)%n: nums.append(23)
     nums = np.array(nums).reshape(-1,n)
     res=[]
     for b in nums: res.extend((key.dot(b))%26)
@@ -31,9 +31,7 @@ def decrypt(text, key):
     res=[]
     for b in nums: res.extend((key_inv.dot(b))%26)
     return nums_to_text(res)
-
-# Example
-key = np.array([[3,3],[2,5]])   # 2x2 key matrix
+key = np.array([[3,3],[2,5]])  
 msg = input("Enter message: ")
 
 enc = encrypt(msg,key)
@@ -41,3 +39,4 @@ print("Encrypted:",enc)
 
 dec = decrypt(enc,key)
 print("Decrypted:",dec)
+
