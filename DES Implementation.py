@@ -1,5 +1,3 @@
-# Short DES Implementation in Python (ECB mode, PKCS#5 padding)
-
 IP  = [58,50,42,34,26,18,10,2,60,52,44,36,28,20,12,4,
        62,54,46,38,30,22,14,6,64,56,48,40,32,24,16,8,
        57,49,41,33,25,17,9,1,59,51,43,35,27,19,11,3,
@@ -29,7 +27,6 @@ PC2 = [14,17,11,24,1,5,3,28,15,6,21,10,
 
 shifts = [1,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1]
 
-# Standard DES S-boxes
 S = [
 [[14,4,13,1,2,15,11,8,3,10,6,12,5,9,0,7],
  [0,15,7,4,14,2,13,1,10,6,12,11,9,5,3,8],
@@ -110,7 +107,6 @@ def bits2str(b): return sum(v<<(63-i) for i,v in enumerate(b))
 def des_encrypt_block(block,key): return bits2str(des_block(str2bits(block),str2bits(key)))
 def des_decrypt_block(block,key): return bits2str(des_block(str2bits(block),str2bits(key),False))
 
-# Padding helpers
 def pad(m): n=8-(len(m)%8); return m+bytes([n])*n
 def unpad(m): return m[:-m[-1]]
 
@@ -126,10 +122,11 @@ def des_ecb_decrypt(data,key):
         out+=des_decrypt_block(int.from_bytes(data[i:i+8],"big"),key).to_bytes(8,"big")
     return unpad(out)
 
-# --- Example ---
+
 if __name__=="__main__":
     key=0x133457799BBCDFF1
     plain=b"HELLODES"
     c=des_ecb_encrypt(plain,key)
     print("Cipher:",c.hex())
     print("Decrypted:",des_ecb_decrypt(c,key))
+
